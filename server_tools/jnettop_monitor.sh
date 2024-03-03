@@ -3,7 +3,7 @@
 # Edit the variables below
 suspend_command="/usr/bin/systemctl hibernate"
 scantime=300 # How long of a period should each scan scan
-ports='80 443' # Ports to monitor
+ports='22 80 443' # Ports to monitor
 min_uptime_minutes=10  # Minimum uptime in minutes
 min_idle_time_minutes=10  # minimum idle time
 
