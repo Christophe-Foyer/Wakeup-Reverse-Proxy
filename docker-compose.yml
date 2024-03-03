@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  wake_redirect:
+    build: "."
+    environment:
+      WAKE_CMD: python3 -c 'import hpilo; hpilo.Ilo("${ILO_HOST}", login="${ILO_LOGIN}", password="${ILO_PASSWORD}", timeout=5).set_host_power(True)'
+      WAKE_CMD_MAX_FREQ: ${WAKE_CMD_MAX_FREQ}
+      DESTINATION_URL: ${DESTINATION_URL}
+    ports:
+      - 8080:8080

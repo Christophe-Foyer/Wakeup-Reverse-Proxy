@@ -1,0 +1,7 @@
+# Base dependencies
+flask
+requests
+ratelimit
+
+# Extra dependencies (for wake routine)
+python-hpilo

@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>Flask Tutorial</title>
+<script type='text/javascript' src='knockout-3.5.1.js'></script>
+<script type="text/javascript">
+    function ping(addr, callback) {
+        if (!this.inUse) {
+            this.status = 'unchecked';
+            this.inUse = true;
+            this.callback = callback;
+            this.addr = addr;
+            var _that = this;
+            this.img = new Image();
+            this.img.onload = function () {
+                _that.inUse = false;
+                _that.callback('responded');
+            };
+            this.img.onerror = function (e) {
+                if (_that.inUse) {
+                    _that.inUse = false;
+                    _that.callback('responded', e);
+                }
+            };
+            this.start = new Date().getTime();
+            this.img.src = addr;
+            this.timer = setTimeout(function () {
+                if (_that.inUse) {
+                    _that.inUse = false;
+                    _that.callback('timeout');
+                }
+            }, 1500);
+        }
+    }
+
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    async function redirect_on_ping() {
+        s = {
+            name: '{{DESTINATION_URL}}',
+            status: 'unchecked'
+        }
+        do {
+            s.status = 'checking';
+            new ping(s.name, function (status, e) {
+                s.status = status;
+            });
+            await sleep(1000);
+        }
+        while (s.status != "responded");
+
+        window.location.replace("{{DESTINATION_URL}}");
+    }
+
+    window.onload = redirect_on_ping;
+</script>
+</head>
+<body>
+    <h1>Waiting for {{DESTINATION_URL}}</h1>
+    <p>You will be redirected when the host is up...</p>
+</body>
+</html>
