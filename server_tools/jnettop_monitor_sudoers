@@ -1,0 +1,3 @@
+{YOUR_USERNAME_HERE} ALL=(root) NOPASSWD: /usr/sbin/jnettop
+{YOUR_USERNAME_HERE} ALL=(root) NOPASSWD: /usr/bin/systemctl hibernate
+{YOUR_USERNAME_HERE} ALL=(root) NOPASSWD: /bin/systemctl hibernate

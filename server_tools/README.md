@@ -2,12 +2,11 @@
 
 Tool to help manage the remote hosts you plan on waking up
 
+*Note: Some of these are a bit hackish, don't give random scripts sudo access without knowing what you're giving access to, feel free to ask questions if you have safety concerns.
+
 ## Included scripts
 
 ### jnettop_monitor.sh
-
-Relies on jnettop (`sudo apt install jnettop` on ubuntu).
-May need to be run as root (or give non-sudo access to jnettop)
 
 A recuring task, easily integrated into cron to check for network activity on specified ports and shut down the server if no activity is detected.
 
@@ -17,9 +16,27 @@ Logic will have to be added to check for desktop activity to avoid hibernation/s
 
 The network monitoring logic should cover most cases however where you are exposing services to remote users, such as webpages, vpns, game servers, whatever you may be running that people would presumably interact with.
 
+#### Setup:
+
+Relies on jnettop (`sudo apt install jnettop` on ubuntu).
+Must be run as the local user, and the `jnettop_sudoers` file must be added to `/etc/sudoers.d/jnettop_sudoers`. 
+This is a bit hackish but if you check what's in that file it should be pretty safe if you trust jnettop.
+
+Add this to crontab (`crontab -e`) to make this a recuring task (every 5 minutes here)
+```
+*/5 * * * * /bin/bash /path/to/scripts/jnettop_monitor.sh
+```
+
 ### proxmox_autoshutdown.sh
 
 Checks for running VMs in proxmox. If all are off (and uptime is more than a set threshold), shuts down the host.
+
+#### Setup:
+
+Add this to crontab (`crontab -e`) to make this a recuring task (every minute here)
+```
+* * * * * /bin/bash /path/to/scripts/proxmox_autoshutdown.sh
+```
 
 ## Additional apps
 
