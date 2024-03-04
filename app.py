@@ -62,7 +62,7 @@ def run_wake_routine():
 
 
 def wake_if_off_route(func):
-    def wake_if_off():
+    def wake_if_off(*args, **kwargs):
         response_ok = False
         try:
             response = requests.options(url)
@@ -75,7 +75,7 @@ def wake_if_off_route(func):
             Thread(target=run_wake_routine).start()
             return render_template("refresh.html", DESTINATION_URL=url)
         else:
-            return func()
+            return func(*args, **kwargs)
 
     wake_if_off.__name__ = func.__name__
     return wake_if_off
