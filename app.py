@@ -6,6 +6,7 @@ import requests
 from flask import Flask, Response, render_template, request
 from ratelimit import RateLimitException, limits
 from math import log10, floor
+import logging
 
 app = Flask(__name__, static_folder="templates/")
 
@@ -46,33 +47,36 @@ def run_wake_routine():
     if not command:
         raise RuntimeError("No 'WAKE_CMD' variable specified! Cannot run wake routine.")
 
-    # Run command
-    process = subprocess.run(
-        command,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        check=True,
-        text=True,
-        shell=True,
-    )
+    try:
+        # Run command
+        process = subprocess.run(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            # check=True,
+            text=True,
+            shell=True,
+        )
 
-    # Print output
-    print(process.stdout)
-    print(process.stderr)
+        # Print output
+        print(process.stdout)
+        print(process.stderr)
+    except Exception as e:
+        logging.exception(f"Exception running wake command | {e}")
 
 
 def wake_if_off_route(func):
     def wake_if_off(*args, **kwargs):
         response_ok = False
         try:
-            response = requests.options(url)
+            response = requests.get(url)
             if response.ok:
                 response_ok = True
         except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError):
             pass
 
         if not response_ok:
-            Thread(target=run_wake_routine).start()
+            Thread(target=run_wake_routine, daemon=True).start()
             return render_template("refresh.html", DESTINATION_URL=url)
         else:
             return func(*args, **kwargs)
