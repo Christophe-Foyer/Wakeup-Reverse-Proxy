@@ -44,3 +44,20 @@ Once you have set the above in your compose file, simply deploy it using*: `dock
 ### helper scripts
 
 Here you can find scripts that help manage server behavior  to go with this app: [link](server_tools/README.md)
+
+## TODO:
+
+ - Boot steps check
+   - Servers can take a long time to boot, having feedback on server-on, vm-host on, vm-on would help the user feel like progress is being made in the boot routine rather than trusting everything is working as expected
+ - Better Fallback page UI
+   - Better looking web ui
+   - Historical boot time and timer on waiting page
+ - Better documentation of using this behind a reverse proxy
+   - Currently I am using this behind nginx-proxy-manager with an on-error redirect setup as such in the advanced options:
+   ```
+   location / {   
+       proxy_pass http://SERVER_HOSTNAME/;
+       error_page 502 = http://LOW_POWER_HOSTNAME:9180/;
+   }
+   ```
+ - Help scripts for preventing idle on the host while programs are running
