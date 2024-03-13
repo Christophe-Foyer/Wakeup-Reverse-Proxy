@@ -1,7 +1,7 @@
 FROM python:alpine
 
 # Basic libraries
-RUN apk add net-tools
+RUN apk add net-tools sshpass
 
 # Set up the app
 RUN mkdir /app
