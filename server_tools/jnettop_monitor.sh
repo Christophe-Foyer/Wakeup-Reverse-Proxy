@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Edit the variables below
-suspend_command="sudo /usr/bin/systemctl shutdown" # need to find a better way to handle hibernate
+suspend_command="sudo /usr/bin/systemctl hibernate"
 scantime=300 # How long of a period should each scan scan
 ports='22 80 443' # Ports to monitor
 min_uptime_minutes=10  # Minimum uptime in minutes
