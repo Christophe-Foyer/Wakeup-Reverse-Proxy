@@ -29,7 +29,7 @@ min_idle_time=$(( min_idle_time_minutes*60*1000 ))
 echo "idle_time: $idle_time (min: $min_idle_time)"
 
 # Run suspend_command
-if [[ -z "$ret" ]] && [[ "${upMins}" -gt "${min_uptime_minutes}" ]] # && [[ "${idle_time}" -gt "${min_idle_time}" ]]
+if [[ -z "$ret" ]] && [[ "${upMins}" -gt "${min_uptime_minutes}" ]] && [[ "${idle_time}" -gt "${min_idle_time}" ]]
 then
     eval "$suspend_command"
 else
